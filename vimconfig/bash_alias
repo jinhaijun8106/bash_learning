@@ -1,0 +1,31 @@
+alias cs="cscope -d"
+alias csbuildall="cscope -R -b"
+
+alias cd_fastsim="cd /Users/haijunjin/work/source/fastsim"
+alias cd_cfg80211="cd /Users/haijunjin/work/source/git/git-stash/core80211"
+alias cd_marcoin="cd /Users/haijunjin/work/source/marconi/code/Projects"
+alias cd_github="cd  ~/Document/github"
+alias cd_wififirmware="cd /Users/haijunjin/work/source/git/gitlab/AppleWiFiFirmware"
+alias cd_wififirmware_fpga="cd /Users/haijunjin/work/source/git/gitlab/AppleWiFiFirmware_fpga"
+alias cd_bennu_firmware="cd /Users/haijunjin/work/source/git/git-stash/aciwififirmwarebennu"
+alias cd_gw1="cd ~/work/source/git/gitlab/gw1"
+alias cd_golay_dirver="cd /Users/haijunjin/work/source/git/git-wifi-gerrit/AppleWLANCore"
+alias cd_golay_rtkit="cd /Users/haijunjin/work/source/reference-rtkit-code"
+alias cd_golay_test="cd /Users/haijunjin/work/source/gerrit-applicationtool/ApplicationTools"
+alias cd_golay_rtl="cd /Users/haijunjin/Perforce/haijunjin_scv-vlsip4.csg.apple.com.1668.golay/projects/golay/design/"
+alias cd_bennu_hw_doc="cd /Users/haijunjin/Perforce/haijunjin_scv-vlsip4.csg.apple.com.1668/projects/bennu/www/private/specs/Apple/"
+alias cd_io80211="cd /Users/haijunjin/Xcode/xcode_17A317/Xcode.app/Contents/Developer/./Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.0.Internal.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers/IOKit/apple80211"
+
+alias cmd_help="cat ~/.bash_alias"
+alias cmd_login_mylinux="ssh scv-haijunjin01.csg.apple.com"
+alias cmd_git_clone_applewifi="git clone ssh://haijun_jin@golayfw-gerrit.apple.com:29418/AppleWiFiFirmware && scp -p -P 29418 haijun_jin@golayfw-gerrit.apple.com:hooks/commit-msg AppleWiFiFirmware/.git/hooks/"
+alias cmd_git_push_for_review="git push origin HEAD:refs/for/master"
+
+alias info_my_sdk="xcrun -sdk iphoneos.internal xcodebuild -version -sdk iphoneos.internal Path"
+alias clone_linux_project="git clone haijunjin@scv-haijunjin01.csg.apple.com:~/git/project.git"
+
+
+alias cd_rtkit="cd ~/work/source/git/git-stash/rtkit"
+alias cd_bennu_fastsim="cd /Users/haijunjin/work/source/bennu/fastsim"
+
+alias sys_check_sdk_ver="xcrun psw_vers"
