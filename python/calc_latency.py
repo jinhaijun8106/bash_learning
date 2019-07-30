@@ -32,8 +32,8 @@ worksheet_stream = open (result_file, 'w')
 tx_file_stream=open(tx_file, 'r')
 rx_file_stream=open(rx_file, 'r')
 
-RX_LOG_PATTERN=r"rx len2:(.*), seq:(.*), timedomain:(.*), timestampH:0x(.*), timestampL:0x(.*)"
-TX_LOG_PATTERN=r"tx len2:(.*), seq:(.*), timedomain:(.*), timestampH:0x(.*), timestampL:0x(.*)"
+RX_LOG_PATTERN=r"rx len2:0x(.*), seq:0x(.*), timedomain:(.*), timestampH:0x(.*), timestampL:0x(.*)"
+TX_LOG_PATTERN=r"tx len2:0x(.*), seq:0x(.*), timedomain:(.*), timestampH:0x(.*), timestampL:0x(.*)"
 
 found_new_pattern = 0
 while 1:
@@ -75,6 +75,9 @@ while 1:
     	cur_seq2=int(check_log.group(2), 16)
     	cur_timeH2=int(check_log.group(4), 16)
     	cur_timeL2=int(check_log.group(5), 16)
+        if (cur_len2 != pkt_len):
+            print("ignore the len2:%x %x" % (cur_len2, pkt_len));
+            continue
 	print("found pattern t2t3 rx_seq tx_seq %x %x %x%x %x%x" %(cur_seq, cur_seq2, cur_timeH,cur_timeL, cur_timeH2,cur_timeL2))
         break
 
@@ -93,9 +96,9 @@ while 1:
     cur_seq=int(check_log.group(2), 16)
     cur_timeH=int(check_log.group(4), 16)
     cur_timeL=int(check_log.group(5), 16)
-    #if (cur_len != pkt_len):
-    #    print("ignore the len:%x %x" % (cur_len, pkt_len));
-    #    continue
+    if (cur_len != pkt_len):
+        print("ignore the len:%x %x" % (cur_len, pkt_len));
+        continue
     print("found tx pattern, seq:%x" % cur_seq);
     #print("line:%s" % line);
     #find the tx packet in the rx logs
