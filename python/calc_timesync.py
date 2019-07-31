@@ -1,9 +1,14 @@
 # usage: calc_timesync.py <pkt_size> <tx_log_file> <rx_log_file>
 # usage example:
-#   calc_timesync.py 0x4ef tx.txt rx.txt
+#   calc_timesync.py 0x4fe tx.txt rx.txt
 # log example:
-#rx len2:0x4fe, seq:f90, timedomain:30, timestampH:0x3, timestampL:0x4917ae54
-#tx len2:0x0, seq:be4, timedomain:30, timestampH:0x3, timestampL:0x491dc732
+# tx side:
+#tx len2:0x4fe, seq:0xec2, timedomain:0x30, timestampH:0x11, timestampL:0xa3e2df3d
+#rx len2:0x4fe, seq:0xc53, timedomain:0x30, timestampH:0x11, timestampL:0xa3e8657b
+
+#rx side:
+#rx len2:0x4fe, seq:0xec2, timedomain:0x30, timestampH:0x11, timestampL:0xb213786f
+#tx len2:0x4fe, seq:0xc53, timedomain:0x30, timestampH:0x11, timestampL:0xb218fa33
 
 import sys
 import subprocess
@@ -14,8 +19,6 @@ pkt_len=int(sys.argv[1], 16)
 tx_file=sys.argv[2]
 rx_file=sys.argv[3]
 result_file="result_timesync.csv"
-
-
 
 print("parsing len:%s, tx file:%s, rx file:%s" % (pkt_len, tx_file, rx_file))
 
