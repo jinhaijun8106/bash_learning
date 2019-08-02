@@ -14,11 +14,13 @@ import sys
 import subprocess
 import os
 import re
+from shutil import copyfile
 
 pkt_len=int(sys.argv[1], 16)
 tx_file=sys.argv[2]
 rx_file=sys.argv[3]
 result_file="result_timesync.csv"
+result_file_merge="result_timesync_merge.csv"
 
 print("parsing len:%s, tx file:%s, rx file:%s" % (pkt_len, tx_file, rx_file))
 
@@ -34,6 +36,14 @@ if not os.path.isfile(rx_file):
 tx_file_stream=open(tx_file, 'r')
 rx_file_stream=open(rx_file, 'r')
 result_file_stream=open(result_file, 'w')
+result_file_merge_stream=open(result_file_merge, 'w')
+
+array_t23_seq=[]
+array_t23_seq2=[]
+array_t23_timeH=[]
+array_t23_timeL=[]
+array_t23_timeH2=[]
+array_t23_timeL2=[]
 
 RX_LOG_PATTERN=r"rx len2:0x(.*), seq:0x(.*), timedomain:(.*), timestampH:0x(.*), timestampL:0x(.*)"
 TX_LOG_PATTERN=r"tx len2:0x(.*), seq:0x(.*), timedomain:(.*), timestampH:0x(.*), timestampL:0x(.*)"
@@ -42,8 +52,17 @@ result_file_stream.write(str("pattern") + "\t")
 result_file_stream.write(str("seq1") + "\t")
 result_file_stream.write(str("seq2") + "\t")
 result_file_stream.write(str("time1") + "\t")
-result_file_stream.write(str("time2"))
+result_file_stream.write(str("time2")+"\t")
 result_file_stream.write("\n")
+
+result_file_merge_stream.write(str("pattern") + "\t")
+result_file_merge_stream.write(str("seq1") + "\t")
+result_file_merge_stream.write(str("seq2") + "\t")
+result_file_merge_stream.write(str("time1") + "\t")
+result_file_merge_stream.write(str("time2") + "\t")
+result_file_merge_stream.write(str("time3") + "\t")
+result_file_merge_stream.write(str("time4") + "\t")
+result_file_merge_stream.write("\n")
 
 found_new_pattern = 0
 while 1:
@@ -96,10 +115,18 @@ while 1:
         result_file_stream.write(str("0x%x%x" %(cur_timeH, cur_timeL)) + "\t")
         result_file_stream.write(str("0x%x%x" %(cur_timeH2, cur_timeL2)) + "\t")
         result_file_stream.write("\n")
+
+        array_t23_seq.append(cur_seq);
+        array_t23_seq2.append(cur_seq2);
+        array_t23_timeH.append(cur_timeH);
+        array_t23_timeL.append(cur_timeL);
+        array_t23_timeH2.append(cur_timeH2);
+        array_t23_timeL2.append(cur_timeL2);
         break
 
 result_file_stream.write("\n")
 
+found_last_match_t23_idx = -1
 found_new_pattern = 0
 while 1:
     #find the tx packet in the tx logs
@@ -151,6 +178,26 @@ while 1:
         result_file_stream.write(str("0x%x%x" %(cur_timeH, cur_timeL)) + "\t")
         result_file_stream.write(str("0x%x%x" %(cur_timeH2, cur_timeL2)) + "\t")
         result_file_stream.write("\n")
+
+        #found the matched t1/2/3/4
+        if ( found_last_match_t23_idx == -1):
+            start_idx = 0
+        else:
+            start_idx = found_last_match_t23_idx
+
+        while (start_idx < len(array_t23_seq)) :
+            if (array_t23_seq[start_idx] == cur_seq and array_t23_seq2[start_idx] == cur_seq2):
+                found_last_match_t23_idx = start_idx
+                result_file_merge_stream.write(str("t1234") + "\t")
+                result_file_merge_stream.write(str("0x%x" %cur_seq) + "\t")
+                result_file_merge_stream.write(str("0x%x" %cur_seq2) + "\t")
+                result_file_merge_stream.write(str("0x%x%x" %(cur_timeH, cur_timeL)) + "\t")
+                result_file_merge_stream.write(str("0x%x%x" %(array_t23_timeH[start_idx], array_t23_timeL[start_idx])) + "\t")
+                result_file_merge_stream.write(str("0x%x%x" %(array_t23_timeH2[start_idx], array_t23_timeL2[start_idx])) + "\t")
+                result_file_merge_stream.write(str("0x%x%x" %(cur_timeH2, cur_timeL2)) + "\t")
+                result_file_merge_stream.write("\n")
+
+            start_idx = start_idx + 1
         break
 
 tx_file_stream.close()
