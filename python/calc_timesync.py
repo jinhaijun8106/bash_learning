@@ -81,6 +81,7 @@ while 1:
     cur_timeL=int(check_log.group(5), 16)
     if (cur_len != pkt_len):
         print("ignore the len:%x %x" % (cur_len, pkt_len));
+        found_new_pattern = 0
         continue
     print("found rx pattern, seq:%x" % cur_seq);
     #print("line:%s" % line);
@@ -143,6 +144,7 @@ while 1:
     cur_timeH=int(check_log.group(4), 16)
     cur_timeL=int(check_log.group(5), 16)
     if (cur_len != pkt_len):
+        found_new_pattern = 0
         print("ignore the len:%x %x" % (cur_len, pkt_len));
         continue
     print("found tx pattern, seq:%x" % cur_seq);
@@ -203,4 +205,5 @@ while 1:
 tx_file_stream.close()
 rx_file_stream.close()
 result_file_stream.close()
-print("the result is in the file %s" %result_file)
+result_file_merge_stream.close()
+print("the result is in the file %s %s" %(result_file, result_file_merge))
