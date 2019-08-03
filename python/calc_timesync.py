@@ -198,6 +198,7 @@ while 1:
                 result_file_merge_stream.write(str("0x%x%08x" %(array_t23_timeH2[start_idx], array_t23_timeL2[start_idx])) + "\t")
                 result_file_merge_stream.write(str("0x%x%08x" %(cur_timeH2, cur_timeL2)) + "\t")
                 result_file_merge_stream.write("\n")
+                break
 
             start_idx = start_idx + 1
         break
